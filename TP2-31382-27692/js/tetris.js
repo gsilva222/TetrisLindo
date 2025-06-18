@@ -501,12 +501,6 @@ class TetrisGame extends Phaser.Scene {
         fill: "#ffffff",
       })
       .setOrigin(0.5);
-    this.levelText = this.add
-      .text(400, 160, `Nível: ${this.level}`, {
-        fontSize: "20px",
-        fill: "#ffffff",
-      })
-      .setOrigin(0.5);
     this.gameOverText = this.add
       .text(
         400,
@@ -747,7 +741,6 @@ class TetrisGame extends Phaser.Scene {
     }
     this.scoreText.setText(`Pontuação: ${this.score}`);
     this.linesText.setText(`Linhas: ${this.lines}`);
-    this.levelText.setText(`Nível: ${this.level}`);
 
     this.drawGame();
   }
