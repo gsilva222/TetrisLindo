@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris Lindo - Phaser Game</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+        }
+        #game-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        #game-canvas {
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        .controls {
+            color: white;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .controls h3 {
+            margin: 10px 0 5px 0;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .controls p {
+            margin: 5px 0;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="game-canvas"></div>
+        <div class="controls">
+            <h3>Controles</h3>
+            <p>← → : Mover peça</p>
+            <p>↓ : Acelerar queda</p>
+            <p>↑ : Rodar peça</p>
+            <p>ESPAÇO : Queda instantânea</p>
+        </div>
+    </div>    
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/tetris.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+/* Estilos adicionais para o Tetris */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+body {
+    font-family: 'Orbitron', monospace;
+    overflow: hidden;
+}
+
+#game-container {
+    position: relative;
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.controls {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.controls h3 {
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.controls p {
+    font-weight: 400;
+    font-size: 12px;
+    margin: 8px 0;
+    padding: 5px 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    border-left: 3px solid #00ff88;
+    font-family: 'Courier New', monospace;
+}
+
+/* Efeitos visuais para o canvas */
+#game-canvas canvas {
+    transition: all 0.3s ease;
+}
+
+#game-canvas canvas:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    #game-container {
+        padding: 15px;
+    }
+    
+    .controls h3 {
+        font-size: 16px;
+    }
+    
+    .controls p {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+}
+
+/* Animação de partículas de fundo */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+    animation: float 15s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-20px) rotate(120deg); }
+    66% { transform: translateY(10px) rotate(240deg); }
+}
