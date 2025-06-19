@@ -501,6 +501,13 @@ class TetrisGame extends Phaser.Scene {
         fill: "#ffffff",
       })
       .setOrigin(0.5);
+
+    // Retângulo preto atrás do texto de game over (inicialmente invisível)
+    this.gameOverBg = this.add
+      .rectangle(400, 300, 420, 110, 0x000000, 0.85)
+      .setOrigin(0.5)
+      .setVisible(false);
+
     this.gameOverText = this.add
       .text(
         400,
@@ -515,30 +522,6 @@ class TetrisGame extends Phaser.Scene {
       )
       .setOrigin(0.5)
       .setVisible(false);
-
-    // Botão Menu
-    const menuButton = this.add.rectangle(700, 50, 80, 40, 0x333333);
-    menuButton.setStrokeStyle(2, 0xffffff);
-    menuButton.setInteractive();
-
-    const menuText = this.add
-      .text(700, 50, "MENU", {
-        fontSize: "16px",
-        fill: "#ffffff",
-      })
-      .setOrigin(0.5);
-
-    menuButton.on("pointerover", () => {
-      menuButton.setFillStyle(0x555555);
-    });
-
-    menuButton.on("pointerout", () => {
-      menuButton.setFillStyle(0x333333);
-    });
-
-    menuButton.on("pointerup", () => {
-      this.scene.start("MenuScene");
-    });
   }
 
   setupControls() {
@@ -707,16 +690,13 @@ class TetrisGame extends Phaser.Scene {
     return basePoints[lines] * this.level;
   }
   endGame() {
-    this.gameOver = true; // Validação rigorosa: score deve ser >= 100 E ser realmente um high score
+    this.gameOver = true;
     const isValidHighScore =
       this.score >= 100 && HighScoreManager.isHighScore(this.score);
-
-    // Verificar se é high score
     if (isValidHighScore) {
-      // É um novo high score! Ir para tela de input de nome
       this.scene.start("HighScoreInputScene", { score: this.score });
     } else {
-      // Game over normal
+      this.gameOverBg.setVisible(true);
       this.gameOverText.setVisible(true);
     }
   }
@@ -728,6 +708,7 @@ class TetrisGame extends Phaser.Scene {
     this.level = 1;
     this.dropInterval = 500;
     this.gameOverText.setVisible(false);
+    this.gameOverBg.setVisible(false);
     this.initializeGrid();
     this.spawnNewPiece();
   }
