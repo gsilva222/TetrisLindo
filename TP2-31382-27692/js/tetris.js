@@ -267,6 +267,103 @@ class MenuScene extends Phaser.Scene {
       }
     });
   }
+
+  // Método para criar interface bonita de Game Over
+  createGameOverInterface() {
+    // Fundo semi-transparente escuro
+    this.gameOverOverlay = this.add.rectangle(
+      400,
+      400,
+      800,
+      800,
+      0x000000,
+      0.7
+    );
+    this.gameOverOverlay.setVisible(false);
+
+    // Painel principal de Game Over
+    this.gameOverPanel = this.add.rectangle(400, 400, 500, 300, 0x1a1a2e);
+    this.gameOverPanel.setStrokeStyle(4, 0xff0000);
+    this.gameOverPanel.setVisible(false);
+
+    // Título "GAME OVER" grande e impactante
+    this.gameOverTitle = this.add
+      .text(400, 320, "GAME OVER", {
+        fontSize: "48px",
+        fill: "#ff0000",
+        fontStyle: "bold",
+        stroke: "#ffffff",
+        strokeThickness: 2,
+      })
+      .setOrigin(0.5)
+      .setVisible(false);
+
+    // Pontuação final
+    this.finalScoreText = this.add
+      .text(400, 380, "", {
+        fontSize: "24px",
+        fill: "#ffffff",
+        fontStyle: "bold",
+      })
+      .setOrigin(0.5)
+      .setVisible(false);
+
+    // Instruções
+    this.gameOverInstructions = this.add
+      .text(400, 430, "Prima R para Reiniciar", {
+        fontSize: "20px",
+        fill: "#cccccc",
+      })
+      .setOrigin(0.5)
+      .setVisible(false);
+
+    this.menuInstructions = this.add
+      .text(400, 460, "Prima M para Menu", {
+        fontSize: "20px",
+        fill: "#cccccc",
+      })
+      .setOrigin(0.5)
+      .setVisible(false);
+  }
+  showGameOverInterface() {
+    console.log("Mostrando interface de Game Over!");
+
+    // Mostrar todos os elementos da interface de Game Over
+    this.gameOverOverlay.setVisible(true);
+    this.gameOverPanel.setVisible(true);
+    this.gameOverTitle.setVisible(true);
+    this.finalScoreText.setVisible(true);
+    this.gameOverInstructions.setVisible(true);
+    this.menuInstructions.setVisible(true);
+
+    // Atualizar texto da pontuação final
+    this.finalScoreText.setText(`Pontuação Final: ${this.score}`);
+
+    // Efeito de animação no título
+    this.tweens.add({
+      targets: this.gameOverTitle,
+      scaleX: 1.1,
+      scaleY: 1.1,
+      duration: 500,
+      yoyo: true,
+      repeat: -1,
+      ease: "Sine.easeInOut",
+    });
+  }
+
+  hideGameOverInterface() {
+    // Esconder todos os elementos da interface de Game Over
+    this.gameOverOverlay.setVisible(false);
+    this.gameOverPanel.setVisible(false);
+    this.gameOverTitle.setVisible(false);
+    this.finalScoreText.setVisible(false);
+    this.gameOverInstructions.setVisible(false);
+    this.menuInstructions.setVisible(false);
+
+    // Parar animações
+    this.tweens.killTweensOf(this.gameOverTitle);
+    this.gameOverTitle.setScale(1); // Reset scale
+  }
 }
 
 // Cena para input de nome do high score
@@ -501,20 +598,9 @@ class TetrisGame extends Phaser.Scene {
         fill: "#ffffff",
       })
       .setOrigin(0.5);
-    this.gameOverText = this.add
-      .text(
-        400,
-        300,
-        "FIM DE JOGO\nPrima R para Reiniciar\nPrima M para Menu",
-        {
-          fontSize: "24px",
-          fill: "#ff0000",
-          fontStyle: "bold",
-          align: "center",
-        }
-      )
-      .setOrigin(0.5)
-      .setVisible(false);
+
+    // Criar interface de Game Over mais bonita
+    this.createGameOverInterface();
 
     // Botão Menu
     const menuButton = this.add.rectangle(700, 50, 80, 40, 0x333333);
@@ -698,7 +784,7 @@ class TetrisGame extends Phaser.Scene {
       this.lines += linesCleared;
       this.score += this.calculateScore(linesCleared);
       this.level = Math.floor(this.lines / 10) + 1;
-      this.dropInterval = Math.max(50, 500 - (this.level - 1) * 50);
+      this.dropInterval = Math.max(50, 500 - this.level * 50);
     }
   }
 
@@ -709,25 +795,25 @@ class TetrisGame extends Phaser.Scene {
   endGame() {
     this.gameOver = true; // Validação rigorosa: score deve ser >= 100 E ser realmente um high score
     const isValidHighScore =
-      this.score >= 100 && HighScoreManager.isHighScore(this.score);
-
-    // Verificar se é high score
+      this.score >= 100 && HighScoreManager.isHighScore(this.score); // Verificar se é high score
     if (isValidHighScore) {
       // É um novo high score! Ir para tela de input de nome
       this.scene.start("HighScoreInputScene", { score: this.score });
     } else {
-      // Game over normal
-      this.gameOverText.setVisible(true);
+      // Game over normal - mostrar interface bonita
+      this.showGameOverInterface();
     }
   }
-
   restartGame() {
     this.gameOver = false;
     this.score = 0;
     this.lines = 0;
     this.level = 1;
     this.dropInterval = 500;
-    this.gameOverText.setVisible(false);
+
+    // Esconder interface de Game Over
+    this.hideGameOverInterface();
+
     this.initializeGrid();
     this.spawnNewPiece();
   }
